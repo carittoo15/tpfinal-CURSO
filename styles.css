@@ -1,0 +1,29 @@
+/* Variables globales*/
+:root {
+    --primary-color: #D7C1A6; /* Marroncito claro */
+    --secondary-color: #8B6B4A; /* Marroncito oscuro */
+    --light-color: #F5F5F5;
+    --dark-color: #333333;
+    --accent-color: #A68A64;
+    --white: #FFFFFF;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
