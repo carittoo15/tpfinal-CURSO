@@ -25,7 +25,7 @@ Simula una tienda online de productos para mascotas donde podés:
 🛍️ Carrito con contador y productos persistentes.  
 🎯 Filtros interactivos por categoría.  
 📬 Formulario de contacto validado.  
-🖼️ Multimedia integrada (imágenes, carrusel).  
+🖼️ Multimedia integrada (imágenes, carrusel se que no era necesario, pero me parecio muy copado agregarlo).  
 📱 Diseño adaptado para móviles y tablets.  
 
 📂 **Estructura del Proyecto**  
