@@ -1,30 +1,17 @@
 // carrito.js
+import { cart, loadCart, saveCart, updateCartCount } from './cartModule.js';
 
-// Variables globales
-let cart = [];
+// Variables globales específicas de la página del carrito
 const cartItemsContainer = document.getElementById('cart-items');
 const cartTotalElement = document.getElementById('cart-total');
 const emptyCartButton = document.getElementById('empty-cart');
 const finalizePurchaseButton = document.getElementById('finalize-purchase');
 
 // Inicialización del carrito
-function initCart() {
-    loadCart();
+function initCartPage() {
+    loadCart(); // Carga el carrito usando la función del módulo
     renderCart();
     setupEventListeners();
-}
-
-// Cargar carrito desde localStorage
-function loadCart() {
-    const savedCart = localStorage.getItem('petlit-cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-    }
-}
-
-// Guardar carrito en localStorage
-function saveCart() {
-    localStorage.setItem('petlit-cart', JSON.stringify(cart));
 }
 
 // Renderizar el carrito
@@ -47,13 +34,13 @@ function renderCart() {
         itemElement.innerHTML = `
             <div class="cart-item-info">
                 <h4>${item.title}</h4>
-                <p>$${item.price} x ${item.quantity} = $${itemTotal.toFixed(2)}</p>
+                <p>$${item.price.toFixed(2)} x ${item.quantity} = $${itemTotal.toFixed(2)}</p>
             </div>
             <div class="cart-item-controls">
-                <button class="cart-btn decrease" data-id="${item.id}">-</button>
+                <button class="cart-btn decrease" data-id="${item.id}" aria-label="Disminuir cantidad de ${item.title}">-</button>
                 <span>${item.quantity}</span>
-                <button class="cart-btn increase" data-id="${item.id}">+</button>
-                <button class="cart-btn remove" data-id="${item.id}">×</button>
+                <button class="cart-btn increase" data-id="${item.id}" aria-label="Aumentar cantidad de ${item.title}">+</button>
+                <button class="cart-btn remove" data-id="${item.id}" aria-label="Eliminar ${item.title} del carrito">×</button>
             </div>
         `;
         cartItemsContainer.appendChild(itemElement);
@@ -66,8 +53,8 @@ function setupEventListeners() {
     // Vaciar carrito
     emptyCartButton.addEventListener('click', () => {
         if (confirm("¿Estás seguro que querés vaciar el carrito?")) {
-            cart = [];
-            saveCart();
+            cart.length = 0; // Vacía el array del carrito
+            saveCart(); // Guarda el carrito vacío
             renderCart();
         }
     });
@@ -79,13 +66,13 @@ function setupEventListeners() {
             return;
         }
         alert('¡Gracias por tu compra!');
-        cart = [];
-        saveCart();
+        cart.length = 0; // Vacía el array del carrito
+        saveCart(); // Guarda el carrito vacío
         renderCart();
         window.location.href = 'index.html';
     });
 
-    //para los controles del carrito
+    // para los controles del carrito (aumentar, disminuir, eliminar)
     cartItemsContainer.addEventListener('click', (e) => {
         const target = e.target;
         if (!target.classList.contains('cart-btn')) return;
@@ -99,6 +86,8 @@ function setupEventListeners() {
             if (item.quantity > 1) {
                 item.quantity--;
             } else {
+                // Si la cantidad es 1 y se disminuye, o si se hace clic en "remove"
+                // Filtra el item para eliminarlo del carrito
                 cart = cart.filter(item => item.id !== id);
             }
         } else if (target.classList.contains('remove')) {
@@ -110,27 +99,5 @@ function setupEventListeners() {
     });
 }
 
-// para agregar un producto al carrito 
-function addToCart(product) {
-    const existingItem = cart.find(item => item.id === product.id);
-    
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        cart.push({
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            quantity: 1
-        });
-    }
-    
-    saveCart();
-    renderCart();
-    alert(`${product.title} ha sido añadido al carrito`);
-}
-
 // inciico el carrito cuando el DOM este listo
-document.addEventListener('DOMContentLoaded', initCart);
-
-export { addToCart, cart };
+document.addEventListener('DOMContentLoaded', initCartPage);
